@@ -17,13 +17,13 @@
     var TodoItem = React.createClass({
       getInitialState: function() {
         return {
-          done: this.props.done
+          done: this.props.done,
         };
       },
 
       defineClass: function(value) {
         var done = this.state.done;
-        if (done == true) {
+        if (done) {
           return value + " done";
         }
         return value;
@@ -102,9 +102,9 @@
       defineClass: function(value) {
         var doneItems = this.props.doneItems;
         if (doneItems == 0) {
-          return value + " hidden";
+          return value;
         }
-        return value;
+        return value + " open";
       },
       render: function() {
         var number = this.props.doneItems;
@@ -125,7 +125,6 @@
 
     var TodoListApp = React.createClass({
       handleTodoToggle: function(todoid) {
-        //TODO: Toteuta togglen tallennus
         $.ajax({
           url: this.props.url,
           dataType: 'json',
