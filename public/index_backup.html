@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ToDo</title>
+    <link rel="stylesheet" href="css/base.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script type="text/babel">
+
+    var TodoItem = React.createClass({
+      handleDelClick: function(e) {
+        console.log(this.props.key);
+        var id = this.props.id;
+        if (!id) {
+          return;
+        }
+        this.props.onTodoDelete({id: id});
+        /*
+        var text = this.state.text.trim();
+        if (!text) {
+          return;
+        }
+        //Käytetään parent-komponentin käsittelijää poistoon
+        this.props.onTodoDelete({text: text});
+        this.setState({text: ''});
+        */
+      },
+      render: function() {
+        return (
+          <div className="todoitem">
+            <div className="todoitemtext">
+              {this.props.text} ({this.props.id})
+            </div>
+            <button className="todoitemdel" onClick={this.handleDelClick}>
+              DEL
+            </button>
+          </div>
+        );
+      }
+    });
+
+    var TodoList = React.createClass({
+      render: function() {
+        var todoNodes = this.props.data.reverse().map(function(todoitem) {
+          return (
+            <TodoItem text={todoitem.text} key={-todoitem.id} id={-todoitem.id} />
+          );
+        });
+        return (
+          <div className="todolist">
+            {todoNodes}
+          </div>
+        );
+      }
+    });
+
+    var TodoForm = React.createClass({
+      getInitialState: function() {
+        return {text: ''};
+      },
+      handleTodoChange: function (e) {
+        this.setState({text: e.target.value});
+      },
+      handleAddClick: function(e) {
+        var text = this.state.text.trim();
+        if (!text) {
+          return;
+        }
+        //Käytetään parent-komponentin käsittelijää tallennukseen
+        this.props.onTodoSubmit({text: text});
+        this.setState({text: ''});
+      },
+      render: function() {
+        return (
+          <div className="todoform" onChange={this.handleTodoChange} >
+            <input
+              className="todoinput"
+              type="text"
+              placeholder="What do you need to do?"
+              value={this.state.text}
+            />
+            <input type="submit" className="todoadd" value="ADD" onClick={this.handleAddClick} />
+          </div>
+        );
+      }
+    });
+
+
+    var TodoListApp = React.createClass({
+      handleTodoDelete: function(todoitem) {
+        console.log(todoitem);
+        //Poistetaan json-tiedostosta
+        $.ajax({
+          url: this.props.url,
+          dataType: 'json',
+          type: 'POST',
+          data: todoitem,
+          success: function(data) {
+            this.setState({data: data});
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+          }.bind(this)
+        });
+      },
+      handleTodoSubmit: function(todoitem) {
+        console.log(todoitem);
+        //Tallennetaan json-tiedostoon
+        $.ajax({
+          url: this.props.url,
+          dataType: 'json',
+          type: 'POST',
+          data: todoitem,
+          success: function(data) {
+            this.setState({data: data});
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+          }.bind(this)
+        });
+      },
+      getInitialState: function() {
+        return {data: []};
+      },
+      componentDidMount: function() {
+        // Ladataan todot json-tiedostosta
+        $.ajax({
+          url: this.props.url,
+          dataType: 'json',
+          cache: false,
+          success: function(data) {
+            this.setState({data: data});
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+          }.bind(this)
+        });
+      },
+      render: function() {
+        return (
+          <div className="todolist">
+            <TodoForm onTodoSubmit={this.handleTodoSubmit} />
+            <TodoList data={this.state.data} onTodoDelete={this.handleTodoDelete} />
+          </div>
+        );
+      }
+    });
+
+
+    ReactDOM.render(
+      <TodoListApp url="/api/todoitems" />,
+      document.getElementById('content')
+    );
+
+    </script>
+
+  </body>
+</html>

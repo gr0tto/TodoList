@@ -1,106 +1,59 @@
 body {
   background: #fff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  line-height: 1.7;
+  font-family: "OpenSans", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.2;
   margin: 0;
-  padding: 30px;
 }
 
-a {
-  color: #4183c4;
-  text-decoration: none;
+.todoitem {
+  padding-top: 20px;
+  padding-bottom: 40px;
+  box-shadow: inset 0px -1px 0px 0px rgba(34,34,34,0.10);
 }
 
-a:hover {
-  text-decoration: underline;
+.todoitemtext {
+  min-width: 80%;
+  float:left;
+  margin-left: 24px;
 }
 
-code {
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  font-family: "Bitstream Vera Sans Mono", Consolas, Courier, monospace;
-  font-size: 12px;
-  margin: 0 2px;
-  padding: 0px 5px;
+.todoitemdel {
+  float:right;
+  margin-right: 16px;
 }
 
-h1, h2, h3, h4 {
-  font-weight: bold;
-  margin: 0 0 15px;
-  padding: 0;
+.todoform {
+  background: #E0E0E0;
+  min-height: 64px;
+  width: 100%;
 }
 
-h1 {
-  border-bottom: 1px solid #ddd;
-  font-size: 2.5em;
-  font-weight: bold;
-  margin: 0 0 15px;
-  padding: 0;
-}
-
-h2 {
-  border-bottom: 1px solid #eee;
-  font-size: 2em;
-}
-
-h3 {
-  font-size: 1.5em;
-}
-
-h4 {
-  font-size: 1.2em;
-}
-
-p, ul {
-  margin: 15px 0;
-}
-
-ul {
-  padding-left: 30px;
-}
-
-input {
-  padding: 10px;
-  height: 40px;
-  width: 300px;
-}
-
-.myBtn {
-	background-color:#ffffff;
-	border-radius:6px;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	cursor:pointer;
-	color:#666666;
-	font-family:Trebuchet MS;
-	font-size:18px;
-	padding:20px;
+.todoadd {
+  float: right;
+  margin: 8px 16px 8px 16px;
+  font-family: "OpenSans", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  background: #94B997;
+  border: none;
+  border-radius: 2px;
+  color: #fff;
+  padding: 12px;
   text-align: center;
-  transition-duration: 0.4s;
-  height: 60px;
-  width: 200px;
-  margin: 30px 30px 30px 0px;
+  min-width: 15%;
 }
 
-.myBtn:hover {
-	background-color:#008CBA;
-  color: white;
-}
-
-.myBtn:active {
-  background-color: :#008CCC;
-  transform: translateY(2px);
-}
-
-
-.checkpointForm {
-  float: left;
-  padding: 10px;
-}
-
-.gmap {
-  max-width: 400px;
-  height: 400px;
+.todoinput {
+  border: none;
+  position: absolute;
+  float:left;
+  margin-left: 16px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  min-width: 70%;
+  padding-left: 8px;
+  height: 48px;
+  font-family: "OpenSans", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.2;
 }

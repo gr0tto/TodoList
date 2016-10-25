@@ -16,7 +16,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-var CHECKPOINTS_FILE = path.join(__dirname, 'checkpoints.json');
+var TODO_FILE = path.join(__dirname, 'todoitems.json');
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -24,8 +24,8 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/api/checkpoints', function(req, res) {
-  fs.readFile(CHECKPOINTS_FILE, function(err, data) {
+app.get('/api/todoitems', function(req, res) {
+  fs.readFile(TODO_FILE, function(err, data) {
     if (err) {
       console.error(err);
       process.exit(1);
@@ -35,29 +35,28 @@ app.get('/api/checkpoints', function(req, res) {
   });
 });
 
-app.post('/api/checkpoints', function(req, res) {
-  fs.readFile(CHECKPOINTS_FILE, function(err, data) {
+app.post('/api/todoitems', function(req, res) {
+  fs.readFile(TODO_FILE, function(err, data) {
     if (err) {
       console.error(err);
       process.exit(1);
     }
-    var checkpoints = JSON.parse(data);
+    var todoitems = JSON.parse(data);
     // NOTE: In a real implementation, we would likely rely on a database or
     // some other approach (e.g. UUIDs) to ensure a globally unique id. We'll
     // treat Date.now() as unique-enough for our purposes.
-    var newCheckpoint = {
+    var newTodoitem = {
       id: Date.now(),
-      address: req.body.address,
-      question: req.body.question
+      text: req.body.text,
     };
-    checkpoints.push(newCheckpoint);
-    fs.writeFile(CHECKPOINTS_FILE, JSON.stringify(checkpoints, null, 4), function(err) {
+    todoitems.push(newTodoitem);
+    fs.writeFile(TODO_FILE, JSON.stringify(todoitems, null, 4), function(err) {
       if (err) {
         console.error(err);
         process.exit(1);
       }
       res.setHeader('Cache-Control', 'no-cache');
-      res.json(checkpoints);
+      res.json(todoitems);
     });
   });
 });
