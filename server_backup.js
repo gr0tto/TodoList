@@ -42,28 +42,14 @@ app.post('/api/todoitems', function(req, res) {
       process.exit(1);
     }
     var todoitems = JSON.parse(data);
-
-    // Jos tuli teksti mutta ei id:tä, tallennetaan uusi
-    if (req.body.text != null) {
-      // NOTE: Pitäisi tehdä hianommin kun Date.now():lla ja .jsonilla
-      var newTodoitem = {
-        id: Date.now(),
-        text: req.body.text,
-        done: false
-      };
-      todoitems.push(newTodoitem);
-    }
-
-    // Jos tuli id mutta ei tekstiä etsitään item ja vaihdetaan tilaa
-    if (req.body.id != null && req.body.text == null) {
-      var id = req.body.id;
-      todoitems.forEach((item) => {
-        if(item.id == id) {
-          item.done = item.done ? false : true;
-        }
-      });
-    }
-
+    // NOTE: In a real implementation, we would likely rely on a database or
+    // some other approach (e.g. UUIDs) to ensure a globally unique id. We'll
+    // treat Date.now() as unique-enough for our purposes.
+    var newTodoitem = {
+      id: Date.now(),
+      text: req.body.text,
+    };
+    todoitems.push(newTodoitem);
     fs.writeFile(TODO_FILE, JSON.stringify(todoitems, null, 4), function(err) {
       if (err) {
         console.error(err);
@@ -87,7 +73,7 @@ app.delete('/api/todoitems', function(req, res) {
 
     var returnArray = [];
     todoitems.forEach((item) => {
-      if(!item.done) {
+      if(item.id != id) {
         returnArray.push(item);
       }
     });

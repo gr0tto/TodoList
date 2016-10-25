@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>Delete</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="20" height="20"></rect>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Todoitem" transform="translate(-335.000000, -26.000000)">
+            <g id="Delete">
+                <g transform="translate(331.000000, 22.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Mask"></g>
+                    <path d="M9,9 L3.00087166,9 C2.44463086,9 2,9.44771525 2,10 C2,10.5561352 2.4481055,11 3.00087166,11 L9,11 L9,16.9991283 C9,17.5553691 9.44771525,18 10,18 C10.5561352,18 11,17.5518945 11,16.9991283 L11,11 L16.9991283,11 C17.5553691,11 18,10.5522847 18,10 C18,9.44386482 17.5518945,9 16.9991283,9 L11,9 L11,3.00087166 C11,2.44463086 10.5522847,2 10,2 C9.44386482,2 9,2.4481055 9,3.00087166 L9,9 Z" fill="#D8D8D8" mask="url(#mask-2)" transform="translate(10.000000, 10.000000) rotate(-45.000000) translate(-10.000000, -10.000000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
