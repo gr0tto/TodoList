@@ -73,12 +73,11 @@
         if (!text) {
           return;
         }
-        //Käytetään parent-komponentin käsittelijää tallennukseen
         this.props.onTodoSubmit({text: text});
         this.setState({text: ''});
       },
       handleKeyPress: function (target) {
-        //Tuetaan enterin painamista
+        //Enter key
         if(target.charCode==13){
           this.handleAddClick();
         }
