@@ -1,0 +1,78 @@
+    <script type="text/babel">
+
+    var GMap = React.createClass({
+      var map = null;
+      var marker = null;
+      var infoWindow = null;
+,
+      render: function() {
+
+        //google.maps.event.addDomListener(window, 'load', initialize);
+
+      }
+
+
+
+      /*
+          var GMap = React.createClass({
+              render: function() {
+                return (
+                    <div className="GMap">
+                      <div ref="map_canvas">
+                        Rui rui
+                      </div>
+                    </div>
+                );
+              },
+              componentDidMount: function() {
+                //var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+                //Create the map after the component has been rendered because we need to manipulate the DOM for Google
+                var map = createMap();
+                var mapOptions = {
+                  center: { lat: -34.397, lng: 150.644},
+                  minZoom: 9,
+                  zoom: 10
+                };
+                //new google.maps.Map(this.refs.map_canvas.getDOMNode(), mapOptions);
+              }
+          });
+      */
+    });
+
+    /*
+    if (checkpoint != null) {
+      console.log("Koitetaan merkata " + address);
+      var map = this.state.map;
+      var geocoder = new google.maps.Geocoder();
+
+      geocoder.geocode( { 'address': address}, function(results, status)
+      {
+          if (status == google.maps.GeocoderStatus.OK)
+          {
+              map.setCenter(results[0].geometry.location);
+              var marker = new google.maps.Marker(
+              {
+                  map: map,
+                  position: results[0].geometry.location
+              });
+          }
+          else
+          {
+              alert("Geocode was not successful for the following reason: " + status);
+          }
+      });
+
+      /*
+      geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          var coordinates = results[0].geometry.location;
+          console.log(coordinates);
+          var marker = new google.maps.Marker(
+          {
+              map: map,
+              position: coordinates
+          });
+        } else {
+          alert("Geocode was not successful for the following reason: " + status);
+        };
+    }; */

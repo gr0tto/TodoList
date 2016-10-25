@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>RalleyCat</title>
+    <!-- Not present in the tutorial. Just for basic styling. -->
+    <link rel="stylesheet" href="css/base.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGXOnDFfaTblS2iVrMl98lRstjNotVyEE"></script>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script type="text/babel">
+
+    var Checkpoint = React.createClass({
+      render: function() {
+        return (
+          <div className="checkpoint">
+              <b>{this.props.address}:</b> {this.props.question}
+          </div>
+        );
+      }
+    });
+
+    var CheckpointList = React.createClass({
+      render: function() {
+        var checkpointNodes = this.props.data.map(function(checkpoint) {
+          return (
+            <Checkpoint address={checkpoint.address} question={checkpoint.question} key={-checkpoint.id} />
+          );
+        });
+        return (
+          <div className="checkpointList">
+            {checkpointNodes}
+          </div>
+        );
+      }
+    });
+
+    var CheckpointForm = React.createClass({
+      getInitialState: function() {
+        return {address: '', question: ''};
+      },
+      handleAddressChange: function(e) {
+        this.setState({address: e.target.value});
+      },
+      handleAddressBlur: function (e) {
+        // Kun osoitekentästä poistutaan, zoomataan kartta oikeaan kohtaan
+        //var map = new google.maps.Map(ReactDOM.findDOMNode(this), mapOptions);
+        this.props.onAddressBlur(e.target.value);
+      },
+      handleQuestionChange: function(e) {
+        this.setState({question: e.target.value});
+      },
+      handleSubmit: function(e) {
+        e.preventDefault();
+        var address = this.state.address.trim();
+        var question = this.state.question.trim();
+        if (!address || !question) {
+          return;
+        }
+        console.log("lisättiin address:" + address + " question:" + question);
+        this.props.onCheckpointSubmit({address: address, question: question});
+        this.setState({address: '', question: ''});
+      },
+      render: function() {
+        return (
+          <form className="checkpointForm" onSubmit={this.handleSubmit}>
+            <input
+              type="text"
+              placeholder="Address"
+              value={this.state.address}
+              onChange={this.handleAddressChange}
+              onBlur={this.handleAddressBlur}
+            /><br/>
+            <input
+              type="text"
+              placeholder="Question"
+              value={this.state.question}
+              onChange={this.handleQuestionChange}
+            /><br/>
+            <input type="submit" className="myBtn" value="Add checkpoint" />
+          </form>
+        );
+      }
+    });
+
+
+    var GMap = React.createClass({
+        getDefaultProps: function () {
+            console.log("Kutsuttiin Gmap getdefaultpropsia.");
+        },
+        render: function() {
+          // LOL ei kai näin saa tehdä?
+          if (this.state != null) {
+            var map = this.state.map;
+            map.setOptions(this.props.mapOptions);
+          }
+          return (
+              <div className="gmap">
+              </div>
+          );
+        },
+        componentDidMount: function() {
+          //Create the map after the component has been rendered because we need to manipulate the DOM for Google
+          console.log("Koitetaan tehdä gmapin componentdidmount");
+          var map = new google.maps.Map(ReactDOM.findDOMNode(this), this.props.mapOptions);
+          this.setState({map: map});
+        },
+        mapCenterLatLng: function () {
+          // Returns the center coordinates of the currently visible map
+          var props = this.props;
+          return new google.maps.LatLng(props.mapCenterLat, props.mapCenterLng);
+        },
+        setMarker: function (coordinates) {
+            var marker = new google.maps.Marker(
+            {
+                map: this.state.map,
+                position: coordinates
+            });
+          }
+            /*
+            console.log("Koitetaan merkata " + checkpoint.address);
+            var map = this.state.map;
+              var geocoder = new google.maps.Geocoder();
+              // Lähetetään osoite Googlen geocoderille ja piirretään marker kartalle
+              geocoder.geocode( { 'address': address}, function(results, status)
+              {
+                  if (status == google.maps.GeocoderStatus.OK)
+                  {
+                      var coordinates = results[0].geometry.location;
+                      console.log(coordinates);
+                      var marker = new google.maps.Marker(
+                      {
+                          map: map,
+                          position: coordinates
+                      });
+                      // Keskitetään kartta markkeriin ja zoomataan sisään
+                      map.zoom = 15;
+                      map.center = coordinates;
+                  }
+                  else
+                  {
+                      console.log("Geocode was not successful for the following reason: " + status);
+                  }
+              });
+              */
+    });
+
+
+    var CheckpointBox = React.createClass({
+      loadCheckpointsFromServer: function() {
+        $.ajax({
+          url: this.props.url,
+          dataType: 'json',
+          cache: false,
+          success: function(data) {
+            this.setState({data: data});
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+          }.bind(this)
+        });
+      },
+      handleCheckpointSubmit: function(checkpoint) {
+        console.log(checkpoint);
+        $.ajax({
+          url: this.props.url,
+          dataType: 'json',
+          type: 'POST',
+          data: checkpoint,
+          success: function(data) {
+            this.setState({data: data, lastCheckpoint: checkpoint});
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+          }.bind(this)
+        });
+      },
+      handleAddressBlur: function(newAddress) {
+        if (newAddress != null && newAddress != '') {
+          console.log("Koitetaan merkata " + newAddress);
+          var mapOptions = this.state.mapOptions;
+          var geocoder = new google.maps.Geocoder();
+          // Lähetetään osoite Googlen geocoderille ja zoomaillaan
+          geocoder.geocode( { 'address': newAddress}, function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                  var coordinates = results[0].geometry.location;
+                  console.log(coordinates);
+                  mapOptions.zoom = 24;
+                  mapOptions.center = coordinates;
+                  // Piirretään marker
+                  //console.log("Jepu jee ", GMap);
+                  //GMap.setMarker(coordinates);
+              }
+              else
+              {
+                  console.log("Geocode was not successful for the following reason: " + status);
+              }
+          });
+        }
+      },
+      getInitialState: function() {
+        var initialOptions = {
+          center: {lat: 60.173308, lng: 24.941046},
+          minZoom: 10,
+          zoom: 10,
+        };
+        return {data: [], mapOptions: initialOptions};
+      },
+      componentDidMount: function() {
+        this.loadCheckpointsFromServer();
+        setInterval(this.loadCheckpointsFromServer, this.props.pollInterval);
+      },
+      render: function() {
+        return (
+          <div className="checkpointBox">
+            <h1>Add a checkpoint</h1>
+            <CheckpointForm onCheckpointSubmit={this.handleCheckpointSubmit} onAddressBlur={this.handleAddressBlur}/>
+            <GMap mapOptions={this.state.mapOptions} address={this.state.address}/>
+            <CheckpointList data={this.state.data} />
+          </div>
+        );
+      }
+    });
+
+
+    ReactDOM.render(
+      <CheckpointBox url="/api/checkpoints" pollInterval={2000} />,
+      document.getElementById('content')
+    );
+
+    </script>
+
+  </body>
+</html>

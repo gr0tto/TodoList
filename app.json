@@ -1,0 +1,12 @@
+{
+  "name": "Ralleycat",
+  "description": "Tool to generate alleycat manifests",
+  "keywords": [ "react", "reactjs", "alleycat" ],
+  "repository": "https://github.com/gr0tto/Ralleycat",
+  "logo": "https://facebook.github.io/react/img/logo.svg",
+  "website": "",
+  "success_url": "/",
+  "env" : {
+    "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-nodejs.git"
+  }
+}
