@@ -1,17 +1,17 @@
 [
     {
-        "id": 1477041996827,
+        "id": 1477399896841,
         "text": "Get a real job",
         "done": false
     },
     {
-        "id": 1477308755835,
+        "id": 1477468240854,
         "text": "Get a haircut",
-        "done": false
+        "done": true
     },
     {
-        "id": 1477390949968,
-        "text": "Käy lencillä",
-        "done": false
+        "id": 1477468245690,
+        "text": "Don't be a slob",
+        "done": true
     }
 ]

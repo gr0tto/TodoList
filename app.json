@@ -1,8 +1,8 @@
 {
-  "name": "Ralleycat",
-  "description": "Tool to generate alleycat manifests",
-  "keywords": [ "react", "reactjs", "alleycat" ],
-  "repository": "https://github.com/gr0tto/Ralleycat",
+  "name": "TodoList",
+  "description": "Learning React with a Todo-App",
+  "keywords": [ "react", "reactjs" ],
+  "repository": "https://github.com/gr0tto/TodoList",
   "logo": "https://facebook.github.io/react/img/logo.svg",
   "website": "",
   "success_url": "/",

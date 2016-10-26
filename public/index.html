@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>ToDo</title>
     <link rel="stylesheet" href="css/base.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://unpkg.com/react@15/dist/react-with-addons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -13,6 +13,8 @@
   <body>
     <div id="content"></div>
     <script type="text/babel">
+    var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
 
     var TodoItem = React.createClass({
       getInitialState: function() {
@@ -36,12 +38,12 @@
       },
       render: function() {
         return (
-          <div className={this.defineClass("todoitem")}>
-            <p className={this.defineClass("todoitemtext")}>
-              {this.props.text}
-            </p>
-            <div className={this.defineClass("icon todoitemdel")} onClick={this.handleDelToggle} />
-          </div>
+            <div className={this.defineClass("todoitem")}>
+              <p className={this.defineClass("todoitemtext")}>
+                {this.props.text}
+              </p>
+              <p className={this.defineClass("icon todoitemdel")} onClick={this.handleDelToggle} />
+            </div>
         );
       }
     });
@@ -55,7 +57,10 @@
         });
         return (
           <div className="todolist">
+          <ReactCSSTransitionGroup transitionName = "list" transitionAppear = {false}
+               transitionEnterTimeout = {300} transitionLeaveTimeout = {600}>
             {todoNodes}
+          </ReactCSSTransitionGroup>
           </div>
         );
       }
@@ -101,9 +106,9 @@
       defineClass: function(value) {
         var doneItems = this.props.doneItems;
         if (doneItems == 0) {
-          return value;
+          return value + " hidden";
         }
-        return value + " open";
+        return value;
       },
       render: function() {
         var number = this.props.doneItems;

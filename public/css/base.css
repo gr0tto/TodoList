@@ -2,9 +2,6 @@
   box-sizing: border-box;
   font-family: "OpenSans", Helvetica, Arial, sans-serif;
   font-size: 20px;
-  /*border: 1px solid rgba(0, 0, 0, 1);*/
-  /*margin: 0;
-  padding: 0;*/
 }
 
 body {
@@ -14,6 +11,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  min-width: 375px;
 }
 
 button {
@@ -68,18 +66,23 @@ button {
 
 .todoitem {
   box-shadow: inset 0px -1px 0px 0px rgba(34,34,34,0.10);
-  height: 64px;
+  /*height: 64px;*/
   background: #FFFFFF;
+  vertical-align: middle;
+  overflow-x: hidden;
 }
 
 .done {
   background: #F4F4F4;
   color: #9D9D9D;
   text-decoration: line-through;
+  animation: txt-bump 0.4s ease;
 }
 
-.cleared {
-  background: #FFCCCC;
+@keyframes txt-bump {
+  0% { padding-left: 0px; }
+  50% { padding-left: 5px; }
+  100% { padding-left: 0px; }
 }
 
 .todoitemtext {
@@ -89,11 +92,6 @@ button {
   overflow-x: hidden;
 }
 
-.footertext {
-  width: 50%;
-  float:left;
-  margin-left: 24px;
-}
 
 .todoitemdel {
   float:right;
@@ -115,9 +113,7 @@ button {
   margin-top: 8px;
   margin-bottom: 8px;
   min-width: 250px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 8px;
+  padding: 8px;
   height: 48px;
   line-height: 1.2;
   width: 50%;
@@ -128,22 +124,55 @@ button {
   display: block;
   position: absolute;
   left: 0;
-  bottom: -64px;
+  bottom: 0px;
   width: 100%;
   height: 64px;
-  /* Animate show/hide from bottom */
-  -webkit-transition: bottom 0.2s ease-out;
-  -moz-transition: bottom 0.2s ease-out;
-  -ms-transition: bottom 0.2s ease-out;
-  -o-transition: bottom 0.2s ease-out;
-  transition: bottom 0.2s ease-out;
+  animation: bottom-pop 0.3s ease-in;
 }
 
-.footer.open {
-  /* transform: translateY(-64px); */
-  bottom: 0px;
+@keyframes bottom-pop {
+  0% { bottom: -64px; }
+  40% { bottom: 0px; }
+  40% { height: 96px; }
+  60% { height: 64px; }
+  80% { height: 72px; }
+  100% { height: 64px; }
+}
+
+
+.footertext {
+  width: 50%;
+  float:left;
+  margin-left: 24px;
 }
 
 .hidden {
   display: none;
+}
+
+/* STUFF FOR LIST ANIMATIONS */
+
+.list-enter {
+   opacity: 0.01;
+}
+
+.list-enter.list-enter-active {
+   opacity: 1;
+   transition: opacity 0.3s ease-in;
+}
+
+@keyframes txt-pop {
+  0% { font-size: 20px; }
+  75% { font-size: 22px; }
+  100% { font-size: 20px; }
+}
+
+
+.list-leave {
+   opacity: 1;
+}
+
+.list-leave.list-leave-active {
+   opacity: 0.01;
+   transition: opacity 0.6s ease-in;
 }
